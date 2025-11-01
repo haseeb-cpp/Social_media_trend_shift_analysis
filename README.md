@@ -58,3 +58,88 @@ daily_ma7 = daily.rolling(7).mean()
 zscore = (daily - daily.mean()) / daily.std()
 plt.plot(daily_ma7)
 
+2️⃣ Platform Popularity & Growth
+
+Compared posting activity by platform using groupby('Platform').
+
+Visualized total counts and growth using bar plots.
+
+platform_counts = df["Platform"].value_counts()
+sns.barplot(x=platform_counts.index, y=platform_counts.values)
+
+3️⃣ Market Share Analysis
+
+Computed each platform’s monthly share of total posts.
+
+Visualized trend shifts with stacked area charts.
+
+monthly = df.set_index("Timestamp").groupby("Platform").resample("ME").size().reset_index()
+monthly["share_%"] = monthly["posts"] / monthly.groupby("Timestamp")["posts"].transform("sum") * 100
+
+4️⃣ Hashtag Trend Analysis
+
+Extracted hashtags using .str.split().explode().
+
+Identified top 20 hashtags and growth percentage month-over-month.
+
+Created bar charts and word clouds.
+
+tags = df["Hashtags"].dropna().str.lower().str.split().explode()
+tag_counts = tags.value_counts().head(20)
+sns.barplot(y=tag_counts.index, x=tag_counts.values)
+
+5️⃣ Engagement Dynamics
+
+Compared average Likes, Retweets, Comments per platform.
+
+Visualized engagement trends over time.
+
+engagement = df.groupby("Platform")[["Likes", "Retweets"]].mean()
+sns.barplot(x=engagement.index, y=engagement["Likes"])
+
+6️⃣ Correlation Insights
+
+Calculated correlations between engagement metrics.
+
+Visualized results using a heatmap.
+
+corr = df[["Likes", "Retweets", "Comments"]].corr()
+sns.heatmap(corr, annot=True, cmap="coolwarm")
+
+💡 Key Insights
+
+Detected major activity spikes aligned with viral events.
+
+Found that Twitter showed consistent engagement compared to volatile platforms.
+
+Identified emerging hashtags with rapid growth.
+
+Discovered strong correlation between likes and retweets, indicating virality.
+
+📊 Visualization Highlights
+
+Line plots with 7-day smoothing
+
+Stacked area charts for platform share
+
+WordClouds for hashtag prominence
+
+Heatmaps for correlation insights
+
+📚 Learnings & Outcomes
+
+Gained expertise in time-series data analysis using Pandas.
+
+Improved SQL-to-Python data integration.
+
+Enhanced data visualization and storytelling skills.
+
+Built strong understanding of trend detection and growth analytics.
+
+🧠 Future Enhancements
+
+Add NLP-based sentiment analysis.
+
+Implement trend forecasting using ARIMA/Prophet models.
+
+Deploy an interactive dashboard using Streamlit or Power BI.
